@@ -9,7 +9,7 @@
   "scripts": {
     "start": "npm run serve & npm run css",
     "serve": "node server",
-    "css": "npx tailwindcss -i ./public/style.css -o ./public/output.css --watch"
+    "css": "npx tailwindcss -i ./public/prebuild.css -o ./public/style.css --watch"
   },
   "dependencies": {
     "@notionhq/client": "^0.4.13",
