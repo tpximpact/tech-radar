@@ -1,0 +1,17 @@
+{
+  "name": "tech-radar",
+  "version": "0.0.1",
+  "description": "A visualisation of our Tech Radar from Notion",
+  "main": "index.js",
+  "author": "Sarah Williams <sarah.a.williams@foundry4.com>",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "start": "node server"
+  },
+  "dependencies": {
+    "@notionhq/client": "^0.4.13",
+    "dotenv": "^16.0.0",
+    "express": "^4.17.2"
+  }
+}
