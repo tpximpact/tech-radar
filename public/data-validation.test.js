@@ -10,7 +10,7 @@ describe('Check that invalid datapoints are excluded', () => {
             label: "Correctly labelled item",
             ring: 1,
             quadrant: 2,
-            active: 0,
+            active: false,
             description: "Well written description",
         });
         data.push({
@@ -18,7 +18,7 @@ describe('Check that invalid datapoints are excluded', () => {
             label: "Item with invalid ring value",
             ring: null,
             quadrant: 2,
-            active: 0,
+            active: false,
             description: "Another well written description",
         });
         data.push({
@@ -26,7 +26,7 @@ describe('Check that invalid datapoints are excluded', () => {
             label: "",
             ring: 1,
             quadrant: 2,
-            active: 0,
+            active: false,
             description: "Item with an empty label",
         });
         data.push({
@@ -34,7 +34,7 @@ describe('Check that invalid datapoints are excluded', () => {
             label: "Item with null quadrant",
             ring: 1,
             quadrant: null,
-            active: 0,
+            active: false,
             description: "Well written description for item with null quadrant",
         });
         excludedData = excludeInvalidDatapoints(data);
@@ -46,7 +46,7 @@ describe('Check that invalid datapoints are excluded', () => {
             label: "Correctly labelled item",
             ring: 1,
             quadrant: 2,
-            active: 0,
+            active: false,
             description: "Well written description",
         });
     });
@@ -57,19 +57,15 @@ describe('Check that invalid datapoints are excluded', () => {
             label: "Item with invalid ring value",
             ring: null,
             quadrant: 2,
-            active: 0,
+            active: false,
             description: "Another well written description",
         });
     });
 
     test('Null ring value gets included in the excludedData array', () => {
         expect(excludedData).toContainEqual({
-            id: 1,
             label: "Item with invalid ring value",
-            ring: null,
-            quadrant: 2,
-            active: 0,
-            description: "Another well written description",
+            invalidAttributes: ['ring'],
         });
     });
 
@@ -79,7 +75,7 @@ describe('Check that invalid datapoints are excluded', () => {
             label: "",
             ring: 1,
             quadrant: 2,
-            active: 0,
+            active: false,
             description: "Item with an empty label",
         });
     });
@@ -90,7 +86,7 @@ describe('Check that invalid datapoints are excluded', () => {
             label: "",
             ring: 1,
             quadrant: 2,
-            active: 0,
+            active: false,
             description: "Item with an empty label",
         });
     });
@@ -101,19 +97,15 @@ describe('Check that invalid datapoints are excluded', () => {
             label: "Item with null quadrant",
             ring: 1,
             quadrant: null,
-            active: 0,
+            active: false,
             description: "Well written description for item with null quadrant",
         });
     });
 
     test('Null quadrant value gets included in the excludedData array', () => {
         expect(excludedData).toContainEqual({
-            id: 3,
             label: "Item with null quadrant",
-            ring: 1,
-            quadrant: null,
-            active: 0,
-            description: "Well written description for item with null quadrant",
+            invalidAttributes: ['quadrant'],
         });
     });
 })

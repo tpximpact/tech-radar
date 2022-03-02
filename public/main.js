@@ -7,9 +7,9 @@ const getRadarData = async () => {
     return data;
 };
 
-var data = await getRadarData();
+const data = await getRadarData();
 
-var excludedData = excludeInvalidDatapoints(data);
+const excludedData = excludeInvalidDatapoints(data);
 
 radar_visualization({
     svg_id: 'radar',
