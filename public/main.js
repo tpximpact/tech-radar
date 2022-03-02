@@ -1,4 +1,5 @@
 import { radar_visualization } from './build-radar.js';
+import excludeInvalidDatapoints from './data-validation.js';
 
 const getRadarData = async () => {
     const result = await fetch(`${window.location.origin}/radar`);
@@ -6,8 +7,9 @@ const getRadarData = async () => {
     return data;
 };
 
-const data = await getRadarData();
-console.log(data);
+var data = await getRadarData();
+
+var excludedData = excludeInvalidDatapoints(data);
 
 radar_visualization({
     svg_id: 'radar',
