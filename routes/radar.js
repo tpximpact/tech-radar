@@ -1,5 +1,6 @@
 require('dotenv').config();
 const { Client } = require('@notionhq/client');
+const excludeInvalidDatapoints = require('../bin/data-validation');
 var express = require('express');
 var router = express.Router();
 
@@ -44,7 +45,15 @@ router.get('/', async (req, res, next) => {
             description: page.properties.Description.rich_text[0]?.plain_text,
         };
     });
-    res.json(result);
+
+    const excludedData = excludeInvalidDatapoints(result);
+
+    const data = {
+        includedData: result,
+        excludedData: excludedData,
+    }
+    res.json(data);
 });
 
 module.exports = router;
+
