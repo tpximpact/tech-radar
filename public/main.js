@@ -8,6 +8,46 @@ const getRadarData = async () => {
 
 const data = await getRadarData();
 
+function redraw() {
+    let svgWrapperWidth = document.getElementById("svg-wrapper").offsetWidth;
+
+    // Set height of SVG wrapper so that items below it respond to the change of height
+    document.getElementById("svg-wrapper").style.height = (svgWrapperWidth * 0.7).toString() + "px";
+
+    // Clear SVG
+    let svg = document.getElementById("radar");
+    while (svg.lastChild) {
+        svg.removeChild(svg.lastChild);
+    }
+
+    // Draw visualisation
+    radar_visualization({
+        svg_id: 'radar',
+        width: svgWrapperWidth,
+        height: 1000,
+        viewbox: "0 0 " + (svgWrapperWidth) + " " + (1400000/svgWrapperWidth),
+        colors: {
+            background: '#fff',
+            grid: '#bbb',
+            inactive: '#ddd',
+        },
+        quadrants: [
+            { name: 'Techniques' },
+            { name: 'Platforms' },
+            { name: 'Tools' },
+            { name: 'Languages & Frameworks' },
+        ],
+        rings: [
+            { name: 'ADOPT', color: '#93c47d' },
+            { name: 'TRIAL', color: '#93d2c2' },
+            { name: 'ASSESS', color: '#fbdb84' },
+            { name: 'HOLD', color: '#efafa9' },
+        ],
+        print_layout: true,
+        entries: data.includedData,
+    });
+}
+
 /*
 Display excluded items to user
 */
@@ -27,27 +67,11 @@ if (data.excludedData.length > 0) {
     }
 }
 
-radar_visualization({
-    svg_id: 'radar',
-    width: 1450,
-    height: 1000,
-    colors: {
-        background: '#fff',
-        grid: '#bbb',
-        inactive: '#ddd',
-    },
-    quadrants: [
-        { name: 'Techniques' },
-        { name: 'Platforms' },
-        { name: 'Tools' },
-        { name: 'Languages & Frameworks' },
-    ],
-    rings: [
-        { name: 'ADOPT', color: '#93c47d' },
-        { name: 'TRIAL', color: '#93d2c2' },
-        { name: 'ASSESS', color: '#fbdb84' },
-        { name: 'HOLD', color: '#efafa9' },
-    ],
-    print_layout: true,
-    entries: data.includedData,
-});
+redraw();
+
+
+window.onresize = () => {
+    setTimeout(() => {
+        redraw();
+    }, 100)
+};
