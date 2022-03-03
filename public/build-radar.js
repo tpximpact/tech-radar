@@ -203,7 +203,8 @@ export function radar_visualization(config) {
         .select('svg#' + config.svg_id)
         .style('background-color', config.colors.background)
         .attr('width', config.width)
-        .attr('height', config.height);
+        .attr('height', config.height)
+        .attr('viewBox', config.viewbox);
 
     var radar = svg.append('g');
     if ('zoomed_quadrant' in config) {
