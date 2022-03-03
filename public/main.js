@@ -7,7 +7,25 @@ const getRadarData = async () => {
 };
 
 const data = await getRadarData();
-console.log(data);
+
+/*
+Display excluded items to user
+*/
+if (data.excludedData.length > 0) {
+    document.getElementById('incomplete-data-warning').style.visibility = "visible";
+    let hiddenItemsList = document.getElementById('hidden-items-list');
+    for (const excludedItem of data.excludedData) {
+        let newListItem = document.createElement('li');
+        newListItem.className = "list-disc";
+        let missingAttributes = "";
+        for (const missingAttribute of excludedItem.invalidAttributes) {
+            missingAttributes += missingAttribute + ", "
+        }
+        missingAttributes = missingAttributes.substring(0, missingAttributes.length - 2);
+        newListItem.appendChild(document.createTextNode(excludedItem.label + " is missing values for " + missingAttributes));
+        hiddenItemsList.appendChild(newListItem);
+    }
+}
 
 radar_visualization({
     svg_id: 'radar',
@@ -31,5 +49,5 @@ radar_visualization({
         { name: 'HOLD', color: '#efafa9' },
     ],
     print_layout: true,
-    entries: data,
+    entries: data.includedData,
 });

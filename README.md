@@ -11,4 +11,10 @@ NOTION_DATABASE_ID=<The ID of the Tech Radar database>
 
 Run `npm install`
 
-Run `npm run dev` and the server and Tailwind CSS build will start. The Tailwind CSS build creates the CSS file that is referenced from `public/index.html` based on what classes you're using so it's performant. 
+Run `npm run dev` and the server and Tailwind CSS build will start. The Tailwind CSS build creates the CSS file that is referenced from `public/index.html` based on what classes you're using so it's performant.
+
+## Testing
+This project uses the Jest framework for unit testing.
+
+### Running unit tests
+Run `npm test`.
