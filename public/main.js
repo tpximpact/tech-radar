@@ -9,13 +9,14 @@ const getRadarData = async () => {
 const data = await getRadarData();
 
 /*
-Placeholder code to show which items have been excluded
+Display excluded items to user
 */
 if (data.excludedData.length > 0) {
     document.getElementById('incomplete-data-warning').style.visibility = "visible";
     let hiddenItemsList = document.getElementById('hidden-items-list');
     for (const excludedItem of data.excludedData) {
         let newListItem = document.createElement('li');
+        newListItem.className = "list-disc";
         let missingAttributes = "";
         for (const missingAttribute of excludedItem.invalidAttributes) {
             missingAttributes += missingAttribute + ", "
