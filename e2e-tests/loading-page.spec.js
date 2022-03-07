@@ -13,5 +13,5 @@ test.describe('Loading main page', () => {
         if (radarInnerHTML === "") {
           await expect(page.locator('#loading-icon')).toBeVisible();
         }
-    })
+    });
 });

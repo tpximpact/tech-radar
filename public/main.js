@@ -1,5 +1,9 @@
 import { radar_visualization } from './build-radar.js';
 
+// Show loading animation
+const loader = document.getElementById("loading-icon");
+loader.style.visibility = "visible";
+
 const getRadarData = async () => {
     const result = await fetch(`${window.location.origin}/radar`);
     const data = await result.json();
@@ -7,6 +11,9 @@ const getRadarData = async () => {
 };
 
 const data = await getRadarData();
+
+// Hide loading animation
+loader.style.visibility = "hidden";
 
 function redraw() {
     let svgWrapperWidth = document.getElementById("svg-wrapper").offsetWidth;
