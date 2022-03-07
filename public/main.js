@@ -1,8 +1,10 @@
 import { radar_visualization } from './build-radar.js';
 
 // Show loading animation
-const loader = document.getElementById("loading-icon");
-loader.style.visibility = "visible";
+const loader = document.getElementById("loader-container");
+const svgWrapper = document.getElementById("svg-wrapper");
+svgWrapper.style.display = "none";
+loader.style.display = "grid";
 
 const getRadarData = async () => {
     const result = await fetch(`${window.location.origin}/radar`);
@@ -13,10 +15,11 @@ const getRadarData = async () => {
 const data = await getRadarData();
 
 // Hide loading animation
-loader.style.visibility = "hidden";
+loader.style.display = "none";
+svgWrapper.style.display = "block";
 
 function redraw() {
-    let svgWrapperWidth = document.getElementById("svg-wrapper").offsetWidth;
+    let svgWrapperWidth = svgWrapper.offsetWidth;
 
     // Set height of SVG wrapper so that items below it respond to the change of height
     document.getElementById("svg-wrapper").style.height = (svgWrapperWidth * 0.7).toString() + "px";

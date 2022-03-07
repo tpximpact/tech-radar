@@ -519,6 +519,10 @@ Ensure the default browser behavior of the `hidden` attribute.
   margin-right: auto;
 }
 
+.block {
+  display: block;
+}
+
 .inline-block {
   display: inline-block;
 }
@@ -535,6 +539,14 @@ Ensure the default browser behavior of the `hidden` attribute.
   display: none;
 }
 
+.h-full {
+  height: 100%;
+}
+
+.h-screen {
+  height: 100vh;
+}
+
 .w-auto {
   width: auto;
 }
@@ -549,6 +561,10 @@ Ensure the default browser behavior of the `hidden` attribute.
 
 .flex-col {
   flex-direction: column;
+}
+
+.place-content-center {
+  place-content: center;
 }
 
 .place-items-center {
