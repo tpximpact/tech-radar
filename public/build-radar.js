@@ -399,7 +399,6 @@ export function radar_visualization(config) {
                     .enter()
                     .append('a')
                     .attr('href', function (d, i) {
-                        console.log(d);
                         return d.link ? d.link : '#'; // stay on same page if no link was provided
                     })
                     .append('text')
