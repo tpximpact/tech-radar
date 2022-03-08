@@ -20,6 +20,13 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+export function legendLabelWrap(segmented) {
+    const maxChars = 18;
+    const segmentedCopy = JSON.parse(JSON.stringify(segmented));
+    const lines = new Array();
+    return segmentedCopy;
+};
+
 export function radar_visualization(config) {
     // custom random number generator, to make random sequence reproducible
     // source: https://stackoverflow.com/questions/521295
@@ -303,6 +310,7 @@ export function radar_visualization(config) {
         // legend
         var legend = radar.append('g');
         for (var quadrant = 0; quadrant < 4; quadrant++) {
+            // quadrant name
             legend
                 .append('text')
                 .attr(
@@ -316,6 +324,7 @@ export function radar_visualization(config) {
                 .style('font-family', 'Arial, Helvetica')
                 .style('font-size', '18px');
             for (var ring = 0; ring < 4; ring++) {
+                // ring name
                 legend
                     .append('text')
                     .attr('transform', legend_transform(quadrant, ring))
@@ -325,7 +334,7 @@ export function radar_visualization(config) {
                     .style('font-weight', 'bold');
                 legend
                     .selectAll('.legend' + quadrant + ring)
-                    .data(segmented[quadrant][ring])
+                    .data(legendLabelWrap(segmented[quadrant][ring]))
                     .enter()
                     .append('a')
                     .attr('href', function (d, i) {
