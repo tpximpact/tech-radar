@@ -9,7 +9,9 @@ NOTION_API_KEY=<The integration API key>
 NOTION_DATABASE_ID=<The ID of the Tech Radar database>
 ```
 
-Run `npm install`
+Run `npm install` to install the project dependencies.
+
+Run `npx playwright install` to install the browsers required for end-to-end testing.
 
 Run `npm run dev` and the server and Tailwind CSS build will start. The Tailwind CSS build creates the CSS file that is referenced from `public/index.html` based on what classes you're using so it's performant.
 

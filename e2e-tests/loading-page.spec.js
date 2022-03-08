@@ -9,7 +9,6 @@ test.describe('Loading main page', () => {
   // User knows that data loading is in progress with a loading icon
     test('if loading icon is displayed when items haven\'t yet loaded', async ({ page }) => {
       const radarInnerHTML = await page.locator('#radar').textContent();
-      console.log(radarInnerHTML);
         if (radarInnerHTML === "") {
           await expect(page.locator('#loading-icon')).toBeVisible();
         }
