@@ -21,9 +21,70 @@
 // THE SOFTWARE.
 
 export function legendLabelWrap(segmented) {
+    /*
+    Wraps text to maximum of maxChars characters per line.
+    "segmented" is an array containing objects. Each object has an attribute
+    "label" which is a string that will be wrapped by this function.
+    A deep copy of "segmented" with the alterated label values is returned.
+    */
     const maxChars = 18;
+
+    const arrayToString = (inputArray) => {
+        let outputString = "";
+        for (const x of inputArray) {
+            outputString += x + '\n';
+        }
+        // Remove trailing newline
+        return outputString.replace(/\n*$/, "");
+    };
+
+    const indexOfLastSpaceIn = (inputString) => {
+        /* Find index of the last space appearing in a string. Returns -1 if there isn't one. */
+        for (let i = inputString.length - 1; i >= 0; i--) {
+            if (inputString.charAt(i) == ' ') {
+                return i;
+            }
+        }
+        return -1;
+    };
+
+    const recursiveWrap = (lines, remainingString) => {
+        // base case: end of array is reached
+        if (remainingString.length <= maxChars) {
+            if (remainingString.length != 0) {
+                lines.push(remainingString);
+            }
+            return;
+        }
+        // If the (maxChars + 1)th is a space, add everything so far to lines.
+        if (remainingString.charAt(maxChars) == ' ') {
+            lines.push(remainingString.subtring(0, maxChars));
+            recursiveWrap(lines, remainingString.substring(maxChars + 1));
+            return;
+        }
+        // If not, count back to the last space if there is one. Add a newline,
+        // remove the space, and add everything before it to lines.
+        let indexOfSpace = indexOfLastSpaceIn(remainingString.substring(0, maxChars));
+        if (indexOfSpace != -1) {
+            lines.push( remainingString.substring(0, indexOfSpace) );
+            recursiveWrap(lines, remainingString.substring(indexOfSpace+1));
+        // If there is no space, add the word up to (maxChars-1) plus a hyphen to lines.
+        } else {
+            lines.push( remainingString.substring(0, maxChars-1) + "-" );
+            recursiveWrap(lines, remainingString.substring(maxChars-1));
+        }
+        return;
+    };
+
+    // Make a deep copy
     const segmentedCopy = JSON.parse(JSON.stringify(segmented));
-    const lines = new Array();
+
+    for (let i = 0; i < segmented.length; i++) {
+        const lines = new Array();
+        recursiveWrap(lines, segmented[i].label);
+        segmentedCopy[i].label = arrayToString(lines);
+    }
+
     return segmentedCopy;
 };
 
@@ -334,10 +395,11 @@ export function radar_visualization(config) {
                     .style('font-weight', 'bold');
                 legend
                     .selectAll('.legend' + quadrant + ring)
-                    .data(legendLabelWrap(segmented[quadrant][ring]))
+                    .data(segmented[quadrant][ring])
                     .enter()
                     .append('a')
                     .attr('href', function (d, i) {
+                        console.log(d);
                         return d.link ? d.link : '#'; // stay on same page if no link was provided
                     })
                     .append('text')
@@ -350,6 +412,27 @@ export function radar_visualization(config) {
                     })
                     .text(function (d, i) {
                         return d.id + '. ' + d.label;
+                    })
+                    .style('font-family', 'Arial, Helvetica')
+                    .style('font-size', '11px')
+                    .on('mouseover', function (d) {
+                        showBubble(d);
+                        highlightLegendItem(d);
+                    })
+                    .on('mouseout', function (d) {
+                        hideBubble(d);
+                        unhighlightLegendItem(d);
+                    })
+                    .append('text')
+                    .attr('transform', function (d, i) {
+                        return legend_transform(quadrant, ring, i);
+                    })
+                    .attr('class', 'legend' + quadrant + ring)
+                    .attr('id', function (d, i) {
+                        return 'legendItemc' + d.id;
+                    })
+                    .text(function (d, i) {
+                        return d.id + '. cheese' + d.label;
                     })
                     .style('font-family', 'Arial, Helvetica')
                     .style('font-size', '11px')
