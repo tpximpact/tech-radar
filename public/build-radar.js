@@ -20,7 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-export function legendLabelWrap(segmented) {
+export function legendLabelWrap(segmented, convertToString=false) {
     /*
     Wraps text to maximum of maxChars characters per line.
     "segmented" is an array containing objects. Each object has an attribute
@@ -32,10 +32,10 @@ export function legendLabelWrap(segmented) {
     const arrayToString = (inputArray) => {
         let outputString = "";
         for (const x of inputArray) {
-            outputString += x + '<br>';
+            outputString += x + '\n';
         }
         // Remove trailing newline
-        return outputString.replace(/<br>*$/, "");
+        return outputString.replace(/\n*$/, "");
     };
 
     const indexOfLastSpaceIn = (inputString) => {
@@ -82,9 +82,11 @@ export function legendLabelWrap(segmented) {
     for (let i = 0; i < segmented.length; i++) {
         const lines = new Array();
         recursiveWrap(lines, segmented[i].label);
+        if (convertToString) {
+            lines = arrayToString(lines);
+        }
         segmentedCopy[i].label = lines;
     }
-
     return segmentedCopy;
 };
 
