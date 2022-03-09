@@ -444,7 +444,7 @@ export function radar_visualization(config) {
                             })
                             .on('mouseout', function () {
                                 hideBubble(d);
-                                unhighlightLegendItem(d);
+                                unhighlightLegendItem(d, numLines);
                             });
                             lineNumber++;
                     }
@@ -475,7 +475,18 @@ export function radar_visualization(config) {
 
     function showBubble(d) {
         if (d.active || config.print_layout) {
-            var tooltip = d3.select('#bubble text').text(d.label);
+            let tooltipText = "";
+            // Check whether or not the label value given is an Array
+            if (typeof d.label == "object") {
+                for (const line of d.label) {
+                    tooltipText += line + " ";
+                }
+            } else {
+                tooltipText = d.label;
+            }
+            // Remove trailing newline
+            tooltipText.replace(/ *$/, "");
+            var tooltip = d3.select('#bubble text').text(tooltipText);
             var bbox = tooltip.node().getBBox();
             d3.select('#bubble')
                 .attr('transform', translate(d.x - bbox.width / 2, d.y - 16))
@@ -508,10 +519,12 @@ export function radar_visualization(config) {
         }
     }
 
-    function unhighlightLegendItem(d) {
-        var legendItem = document.getElementById('legendItem' + d.id);
-        legendItem.removeAttribute('filter');
-        legendItem.removeAttribute('fill');
+    function unhighlightLegendItem(d, numLines) {
+        for (let i = 0; i < numLines; i++) {
+            var legendItem = document.getElementById('legendItem' + d.id + i);
+            legendItem.removeAttribute('filter');
+            legendItem.removeAttribute('fill');
+        }
     }
 
     // draw blips on radar
