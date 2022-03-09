@@ -409,15 +409,15 @@ export function radar_visualization(config) {
                         .select('.legend' + quadrant + ring)
                         .data(wrappedSegmentedQR[labelIndex])
                         .enter()
-                        .append('a')
-                        .attr('href', function (d) {
-                            return d.link ? d.link : '#'; // stay on same page if no link was provided
-                        });
                     const numLines = wrappedSegmentedQR[labelIndex].label.length;
                     for (var lineIndex = 0; lineIndex < numLines; lineIndex++) {
                         // individual lines within a label
                         const d = wrappedSegmentedQR[labelIndex];
                         legend
+                            .append('a')
+                            .attr('href', function () {
+                                return '#'; // stay on same page if no link was provided
+                            })
                             .append('text')
                             .attr('transform', function () {
                                 return legend_transform(quadrant, ring, lineNumber);
