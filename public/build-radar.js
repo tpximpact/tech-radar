@@ -393,35 +393,53 @@ export function radar_visualization(config) {
                     .style('font-family', 'Arial, Helvetica')
                     .style('font-size', '12px')
                     .style('font-weight', 'bold');
-                legend
-                    .selectAll('.legend' + quadrant + ring)
-                    .data(segmented[quadrant][ring])
-                    .enter()
-                    .append('a')
-                    .attr('href', function (d, i) {
-                        return d.link ? d.link : '#'; // stay on same page if no link was provided
-                    })
-                    .append('text')
-                    .attr('transform', function (d, i) {
-                        return legend_transform(quadrant, ring, i);
-                    })
-                    .attr('class', 'legend' + quadrant + ring)
-                    .attr('id', function (d, i) {
-                        return 'legendItemc' + d.id;
-                    })
-                    .text(function (d, i) {
-                        return d.id + d.label;
-                    })
-                    .style('font-family', 'Arial, Helvetica')
-                    .style('font-size', '11px')
-                    .on('mouseover', function (d) {
-                        showBubble(d);
-                        highlightLegendItem(d);
-                    })
-                    .on('mouseout', function (d) {
-                        hideBubble(d);
-                        unhighlightLegendItem(d);
-                    });
+                
+                const wrappedSegmentedQR = legendLabelWrap(segmented[quadrant][ring]);
+                let lineNumber = 0;
+                for (var labelIndex = 0; labelIndex < segmented[quadrant][ring].length; labelIndex++) {
+                    // individual labels on the legend within a quadrant + ring
+                    legend
+                        .select('.legend' + quadrant + ring)
+                        .data(wrappedSegmentedQR[labelIndex])
+                        .enter()
+                        .append('a')
+                        .attr('href', function (d) {
+                            return d.link ? d.link : '#'; // stay on same page if no link was provided
+                        });
+                    for (var lineIndex = 0; lineIndex < wrappedSegmentedQR[labelIndex].label.length; lineIndex++) {
+                        // individual lines within a label
+                        const d = wrappedSegmentedQR[labelIndex];
+                        legend
+                            .append('text')
+                            .attr('transform', function () {
+                                return legend_transform(quadrant, ring, lineNumber);
+                            })
+                            .attr('class', 'legend' + quadrant + ring)
+                            .attr('id', function () {
+                                return 'legendItemc' + d.id + lineNumber;
+                            })
+                            .text(function () {
+                                let prefix = "";
+                                if (lineIndex == 0) {
+                                    prefix = d.id + '. ';
+                                } else {
+                                    prefix = "\u00A0 \u00A0 \u00A0";
+                                }
+                                return prefix + d.label[lineIndex];
+                            })
+                            .style('font-family', 'Arial, Helvetica')
+                            .style('font-size', '11px')
+                            .on('mouseover', function () {
+                                showBubble(d);
+                                highlightLegendItem(d);
+                            })
+                            .on('mouseout', function () {
+                                hideBubble(d);
+                                unhighlightLegendItem(d);
+                            });
+                            lineNumber++;
+                    }
+                }
             }
         }
     }
