@@ -27,7 +27,7 @@ export function legendLabelWrap(segmented) {
     "label" which is a string that will be wrapped by this function.
     A deep copy of "segmented" with the alterated label values is returned.
     */
-    const maxChars = 18;
+    const maxChars = 17;
 
     const arrayToString = (inputArray) => {
         let outputString = "";
@@ -335,11 +335,16 @@ export function radar_visualization(config) {
         }
     }
 
+    let currentLineOffset = 0;
+
     function legend_transform(quadrant, ring, index = null) {
         var dx = ring < 2 ? 0 : 120;
         var dy = index == null ? -16 : index * 12;
+        if (ring === 0 && index === null) {
+            currentLineOffset = 0;
+        }
         if (ring % 2 === 1) {
-            dy = dy + 36 + segmented[quadrant][ring - 1].length * 12;
+            dy = dy + 36 + currentLineOffset + segmented[quadrant][ring - 1].length * 12;
         }
         return translate(
             legend_offset[quadrant].x + dx,
@@ -423,6 +428,7 @@ export function radar_visualization(config) {
                                 if (lineIndex == 0) {
                                     prefix = d.id + '. ';
                                 } else {
+                                    currentLineOffset += 12;
                                     prefix = "\u00A0 \u00A0 \u00A0";
                                 }
                                 return prefix + d.label[lineIndex];
