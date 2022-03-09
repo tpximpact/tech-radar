@@ -32,10 +32,10 @@ export function legendLabelWrap(segmented) {
     const arrayToString = (inputArray) => {
         let outputString = "";
         for (const x of inputArray) {
-            outputString += x + '\n';
+            outputString += x + '<br>';
         }
         // Remove trailing newline
-        return outputString.replace(/\n*$/, "");
+        return outputString.replace(/<br>*$/, "");
     };
 
     const indexOfLastSpaceIn = (inputString) => {
@@ -82,7 +82,7 @@ export function legendLabelWrap(segmented) {
     for (let i = 0; i < segmented.length; i++) {
         const lines = new Array();
         recursiveWrap(lines, segmented[i].label);
-        segmentedCopy[i].label = arrayToString(lines);
+        segmentedCopy[i].label = lines;
     }
 
     return segmentedCopy;
@@ -407,31 +407,10 @@ export function radar_visualization(config) {
                     })
                     .attr('class', 'legend' + quadrant + ring)
                     .attr('id', function (d, i) {
-                        return 'legendItem' + d.id;
-                    })
-                    .text(function (d, i) {
-                        return d.id + '. ' + d.label;
-                    })
-                    .style('font-family', 'Arial, Helvetica')
-                    .style('font-size', '11px')
-                    .on('mouseover', function (d) {
-                        showBubble(d);
-                        highlightLegendItem(d);
-                    })
-                    .on('mouseout', function (d) {
-                        hideBubble(d);
-                        unhighlightLegendItem(d);
-                    })
-                    .append('text')
-                    .attr('transform', function (d, i) {
-                        return legend_transform(quadrant, ring, i);
-                    })
-                    .attr('class', 'legend' + quadrant + ring)
-                    .attr('id', function (d, i) {
                         return 'legendItemc' + d.id;
                     })
                     .text(function (d, i) {
-                        return d.id + '. cheese' + d.label;
+                        return d.id + d.label;
                     })
                     .style('font-family', 'Arial, Helvetica')
                     .style('font-size', '11px')
