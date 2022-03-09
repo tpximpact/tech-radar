@@ -413,7 +413,8 @@ export function radar_visualization(config) {
                         .attr('href', function (d) {
                             return d.link ? d.link : '#'; // stay on same page if no link was provided
                         });
-                    for (var lineIndex = 0; lineIndex < wrappedSegmentedQR[labelIndex].label.length; lineIndex++) {
+                    const numLines = wrappedSegmentedQR[labelIndex].label.length;
+                    for (var lineIndex = 0; lineIndex < numLines; lineIndex++) {
                         // individual lines within a label
                         const d = wrappedSegmentedQR[labelIndex];
                         legend
@@ -423,7 +424,7 @@ export function radar_visualization(config) {
                             })
                             .attr('class', 'legend' + quadrant + ring)
                             .attr('id', function () {
-                                return 'legendItemc' + d.id + lineNumber;
+                                return 'legendItem' + d.id + lineIndex;
                             })
                             .text(function () {
                                 let prefix = "";
@@ -439,7 +440,7 @@ export function radar_visualization(config) {
                             .style('font-size', '11px')
                             .on('mouseover', function () {
                                 showBubble(d);
-                                highlightLegendItem(d);
+                                highlightLegendItem(d, numLines);
                             })
                             .on('mouseout', function () {
                                 hideBubble(d);
@@ -498,10 +499,13 @@ export function radar_visualization(config) {
             .style('opacity', 0);
     }
 
-    function highlightLegendItem(d) {
-        var legendItem = document.getElementById('legendItem' + d.id);
-        legendItem.setAttribute('filter', 'url(#solid)');
-        legendItem.setAttribute('fill', 'white');
+    function highlightLegendItem(d, numLines) {
+        // Iterate through each line of the label, highlighting each
+        for (let i = 0; i < numLines; i++) {
+            var legendItem = document.getElementById('legendItem' + d.id + i);
+            legendItem.setAttribute('filter', 'url(#solid)');
+            legendItem.setAttribute('fill', 'white');
+        }
     }
 
     function unhighlightLegendItem(d) {
