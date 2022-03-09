@@ -20,6 +20,76 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+export function legendLabelWrap(segmented, convertToString=false) {
+    /*
+    Wraps text to maximum of maxChars characters per line.
+    "segmented" is an array containing objects. Each object has an attribute
+    "label" which is a string that will be wrapped by this function.
+    A deep copy of "segmented" with the alterated label values is returned.
+    */
+    const maxChars = 17;
+
+    const arrayToString = (inputArray) => {
+        let outputString = "";
+        for (const x of inputArray) {
+            outputString += x + '\n';
+        }
+        // Remove trailing newline
+        return outputString.replace(/\n*$/, "");
+    };
+
+    const indexOfLastSpaceIn = (inputString) => {
+        /* Find index of the last space appearing in a string. Returns -1 if there isn't one. */
+        for (let i = inputString.length - 1; i >= 0; i--) {
+            if (inputString.charAt(i) == ' ') {
+                return i;
+            }
+        }
+        return -1;
+    };
+
+    const recursiveWrap = (lines, remainingString) => {
+        // base case: end of array is reached
+        if (remainingString.length <= maxChars) {
+            if (remainingString.length != 0) {
+                lines.push(remainingString);
+            }
+            return;
+        }
+        // If the (maxChars + 1)th is a space, add everything so far to lines.
+        if (remainingString.charAt(maxChars) == ' ') {
+            lines.push(remainingString.subtring(0, maxChars));
+            recursiveWrap(lines, remainingString.substring(maxChars + 1));
+            return;
+        }
+        // If not, count back to the last space if there is one. Add a newline,
+        // remove the space, and add everything before it to lines.
+        let indexOfSpace = indexOfLastSpaceIn(remainingString.substring(0, maxChars));
+        if (indexOfSpace != -1) {
+            lines.push( remainingString.substring(0, indexOfSpace) );
+            recursiveWrap(lines, remainingString.substring(indexOfSpace+1));
+        // If there is no space, add the word up to (maxChars-1) plus a hyphen to lines.
+        } else {
+            lines.push( remainingString.substring(0, maxChars-1) + "-" );
+            recursiveWrap(lines, remainingString.substring(maxChars-1));
+        }
+        return;
+    };
+
+    // Make a deep copy
+    const segmentedCopy = JSON.parse(JSON.stringify(segmented));
+
+    for (let i = 0; i < segmented.length; i++) {
+        const lines = new Array();
+        recursiveWrap(lines, segmented[i].label);
+        if (convertToString) {
+            lines = arrayToString(lines);
+        }
+        segmentedCopy[i].label = lines;
+    }
+    return segmentedCopy;
+};
+
 export function radar_visualization(config) {
     // custom random number generator, to make random sequence reproducible
     // source: https://stackoverflow.com/questions/521295
@@ -267,11 +337,16 @@ export function radar_visualization(config) {
         }
     }
 
+    let currentLineOffset = 0;
+
     function legend_transform(quadrant, ring, index = null) {
         var dx = ring < 2 ? 0 : 120;
         var dy = index == null ? -16 : index * 12;
+        if (ring === 0 && index === null) {
+            currentLineOffset = 0;
+        }
         if (ring % 2 === 1) {
-            dy = dy + 36 + segmented[quadrant][ring - 1].length * 12;
+            dy = dy + 36 + currentLineOffset + segmented[quadrant][ring - 1].length * 12;
         }
         return translate(
             legend_offset[quadrant].x + dx,
@@ -293,7 +368,9 @@ export function radar_visualization(config) {
         radar
             .append('text')
             .attr('transform', translate(footer_offset.x, footer_offset.y))
-            .text('▲ moved up     ▼ moved down')
+            //.text('▲ moved up     ▼ moved down')
+            // Uncomment the above line and comment the below line when 'moved up/down' arrows are added to the visualisation
+            .text('')
             .attr('xml:space', 'preserve')
             .style('font-family', 'Arial, Helvetica')
             .style('font-size', '10px');
@@ -301,6 +378,7 @@ export function radar_visualization(config) {
         // legend
         var legend = radar.append('g');
         for (var quadrant = 0; quadrant < 4; quadrant++) {
+            // quadrant name
             legend
                 .append('text')
                 .attr(
@@ -314,6 +392,7 @@ export function radar_visualization(config) {
                 .style('font-family', 'Arial, Helvetica')
                 .style('font-size', '18px');
             for (var ring = 0; ring < 4; ring++) {
+                // ring name
                 legend
                     .append('text')
                     .attr('transform', legend_transform(quadrant, ring))
@@ -321,35 +400,55 @@ export function radar_visualization(config) {
                     .style('font-family', 'Arial, Helvetica')
                     .style('font-size', '12px')
                     .style('font-weight', 'bold');
-                legend
-                    .selectAll('.legend' + quadrant + ring)
-                    .data(segmented[quadrant][ring])
-                    .enter()
-                    .append('a')
-                    .attr('href', function (d, i) {
-                        return d.link ? d.link : '#'; // stay on same page if no link was provided
-                    })
-                    .append('text')
-                    .attr('transform', function (d, i) {
-                        return legend_transform(quadrant, ring, i);
-                    })
-                    .attr('class', 'legend' + quadrant + ring)
-                    .attr('id', function (d, i) {
-                        return 'legendItem' + d.id;
-                    })
-                    .text(function (d, i) {
-                        return d.id + '. ' + d.label;
-                    })
-                    .style('font-family', 'Arial, Helvetica')
-                    .style('font-size', '11px')
-                    .on('mouseover', function (d) {
-                        showBubble(d);
-                        highlightLegendItem(d);
-                    })
-                    .on('mouseout', function (d) {
-                        hideBubble(d);
-                        unhighlightLegendItem(d);
-                    });
+                
+                const wrappedSegmentedQR = legendLabelWrap(segmented[quadrant][ring]);
+                let lineNumber = 0;
+                for (var labelIndex = 0; labelIndex < segmented[quadrant][ring].length; labelIndex++) {
+                    // individual labels on the legend within a quadrant + ring
+                    legend
+                        .select('.legend' + quadrant + ring)
+                        .data(wrappedSegmentedQR[labelIndex])
+                        .enter()
+                    const numLines = wrappedSegmentedQR[labelIndex].label.length;
+                    for (var lineIndex = 0; lineIndex < numLines; lineIndex++) {
+                        // individual lines within a label
+                        const d = wrappedSegmentedQR[labelIndex];
+                        legend
+                            .append('a')
+                            .attr('href', function () {
+                                return '#'; // stay on same page if no link was provided
+                            })
+                            .append('text')
+                            .attr('transform', function () {
+                                return legend_transform(quadrant, ring, lineNumber);
+                            })
+                            .attr('class', 'legend' + quadrant + ring)
+                            .attr('id', function () {
+                                return 'legendItem' + d.id + lineIndex;
+                            })
+                            .text(function () {
+                                let prefix = "";
+                                if (lineIndex == 0) {
+                                    prefix = d.id + '. ';
+                                } else {
+                                    currentLineOffset += 12;
+                                    prefix = "\u00A0 \u00A0 \u00A0";
+                                }
+                                return prefix + d.label[lineIndex];
+                            })
+                            .style('font-family', 'Arial, Helvetica')
+                            .style('font-size', '11px')
+                            .on('mouseover', function () {
+                                showBubble(d);
+                                highlightLegendItem(d, numLines);
+                            })
+                            .on('mouseout', function () {
+                                hideBubble(d);
+                                unhighlightLegendItem(d, numLines);
+                            });
+                            lineNumber++;
+                    }
+                }
             }
         }
     }
@@ -376,7 +475,18 @@ export function radar_visualization(config) {
 
     function showBubble(d) {
         if (d.active || config.print_layout) {
-            var tooltip = d3.select('#bubble text').text(d.label);
+            let tooltipText = "";
+            // Check whether or not the label value given is an Array
+            if (typeof d.label == "object") {
+                for (const line of d.label) {
+                    tooltipText += line + " ";
+                }
+            } else {
+                tooltipText = d.label;
+            }
+            // Remove trailing newline
+            tooltipText.replace(/ *$/, "");
+            var tooltip = d3.select('#bubble text').text(tooltipText);
             var bbox = tooltip.node().getBBox();
             d3.select('#bubble')
                 .attr('transform', translate(d.x - bbox.width / 2, d.y - 16))
@@ -400,16 +510,21 @@ export function radar_visualization(config) {
             .style('opacity', 0);
     }
 
-    function highlightLegendItem(d) {
-        var legendItem = document.getElementById('legendItem' + d.id);
-        legendItem.setAttribute('filter', 'url(#solid)');
-        legendItem.setAttribute('fill', 'white');
+    function highlightLegendItem(d, numLines) {
+        // Iterate through each line of the label, highlighting each
+        for (let i = 0; i < numLines; i++) {
+            var legendItem = document.getElementById('legendItem' + d.id + i);
+            legendItem.setAttribute('filter', 'url(#solid)');
+            legendItem.setAttribute('fill', 'white');
+        }
     }
 
-    function unhighlightLegendItem(d) {
-        var legendItem = document.getElementById('legendItem' + d.id);
-        legendItem.removeAttribute('filter');
-        legendItem.removeAttribute('fill');
+    function unhighlightLegendItem(d, numLines) {
+        for (let i = 0; i < numLines; i++) {
+            var legendItem = document.getElementById('legendItem' + d.id + i);
+            legendItem.removeAttribute('filter');
+            legendItem.removeAttribute('fill');
+        }
     }
 
     // draw blips on radar
