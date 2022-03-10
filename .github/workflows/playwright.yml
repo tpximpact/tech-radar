@@ -25,7 +25,7 @@ jobs:
     - name: Get server running
       run:  (npm run dev&)
     - name: Run Playwright tests
-      run: npx playwright test --workers=3
+      run: npx playwright test --workers=33
     - uses: actions/upload-artifact@v2
       if: always()
       with:
