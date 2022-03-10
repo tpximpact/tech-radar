@@ -24,6 +24,10 @@ describe('Correct section heading should be returned', () => {
                 {definitelyInvalid: "yes"},
             ]
         }
+        let invalidObject2 = {
+            completelyInvalid: "1"
+        }
         expect(findSectionHeading(invalidObject, "quadrants")).toBe(-1);
+        expect(findSectionHeading(invalidObject2, "quadrants")).toBe(-1);
     })
 });
