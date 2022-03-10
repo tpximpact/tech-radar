@@ -2,6 +2,7 @@ const { test, expect } = require('@playwright/test');
 let radar;
 let legendItem10;
 let bubble;
+let consoleLogMessage;
 
 // User goes to webpage
 test.beforeEach(async ({ page }) => {
@@ -9,6 +10,10 @@ test.beforeEach(async ({ page }) => {
     radar = await page.locator('#radar');
     legendItem10 = await page.locator('#legendItem10');
     bubble = await page.locator("#bubble");
+    consoleLogMessage = null;
+    await page.on("console", (msg) => {
+        consoleLogMessage = msg;
+    });
   });
 
 test.describe('Hovering over a label in the legend', () => {
@@ -29,3 +34,7 @@ test.describe('Hovering over a label in the legend', () => {
         await expect(bubble).toBeVisible();
     });
 });
+
+test.afterEach(async ({ page }, testInfo) => {
+    await expect(consoleLogMessage).toBeNull();
+  });
