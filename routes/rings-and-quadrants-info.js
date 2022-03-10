@@ -1,3 +1,4 @@
+import { findSectionHeading } from './rg-info-helper.js';
 require('dotenv').config();
 const { Client } = require('@notionhq/client');
 var express = require('express');
