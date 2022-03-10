@@ -5,7 +5,7 @@ var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
 var radarRouter = require('./routes/radar');
-var ringsAndQuadrantsInfoRouter = require('./routes/rings-and-quadrant-info');
+var ringsAndQuadrantsInfoRouter = require('./routes/rings-and-quadrants-info');
 
 var app = express();
 

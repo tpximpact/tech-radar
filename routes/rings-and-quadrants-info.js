@@ -8,7 +8,8 @@ const databaseId = process.env.NOTION_DATABASE_ID;
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
-    const data = {dummyData: true};
+    const response = await notion.databases.query({ database_id: databaseId });
+    //const data = response;
     res.json(data);
 });
 
