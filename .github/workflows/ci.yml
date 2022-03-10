@@ -11,6 +11,7 @@ on:
 env:
   NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
   NOTION_DATABASE_ID: ${{ secrets.NOTION_DATABASE_ID }}
+  NOTION_PAGE_ID: ${{ secrets.NOTION_PAGE_ID }}
 
 jobs:
   build:
@@ -27,6 +28,7 @@ jobs:
           cache-dependency-path: package-lock.json
       - run: echo "NOTION_API_KEY=$NOTION_API_KEY" >> .env
       - run: echo "NOTION_DATABASE_ID=$NOTION_DATABASE_ID" >> .env
+      - run: echo "NOTION_PAGE_ID=$NOTION_PAGE_ID" >> .env
       - run: npm ci
       - run: npm run build --if-present
       - run: npm test

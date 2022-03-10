@@ -4,12 +4,15 @@ var express = require('express');
 var router = express.Router();
 
 const notion = new Client({ auth: process.env.NOTION_API_KEY });
-const databaseId = process.env.NOTION_DATABASE_ID;
+const pageId = process.env.NOTION_PAGE_ID;
 
 /* GET home page. */
-router.get('/', function (req, res, next) {
-    const response = await notion.databases.query({ database_id: databaseId });
-    //const data = response;
+router.get('/', async function (req, res, next) {
+    const response = await notion.blocks.children.list({
+        block_id: pageId,
+        page_size: 50,
+      });
+    const data = response;
     res.json(data);
 });
 
