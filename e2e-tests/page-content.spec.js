@@ -10,6 +10,8 @@ let quadrantsTextSection;
 let quadrantsText;
 let ringsText;
 
+test.describe.configure({ mode: 'parallel' });
+
 // User goes to webpage
 test.beforeEach(async ({ page }) => {
     await page.goto('http://localhost:3000');
@@ -48,26 +50,26 @@ test.describe('Hovering over a label in the legend', () => {
 });
 
 test.describe('User wants to know what the rings and quadrants are referring to', () => {
-    test('that there is a button for users who want to know what the rings are', () => {
+    test('that there is a button for users who want to know what the rings are', async ({ page }) => {
         await expect(ringsHeading).toHaveText("What are the rings?");
     });
-    test('that there is a button for users who want to know what the quadrants are', () => {
+    test('that there is a button for users who want to know what the quadrants are', async ({ page }) => {
         await expect(quadrantsHeading).toHaveText("What are the quadrants?");
     });
-    test('that the section of text explaining the rings is initially hidden', () => {
-        await expect(ringsTextSection).not.tobeVisible();
+    test('that the section of text explaining the rings is initially hidden', async ({ page }) => {
+        await expect(ringsTextSection).not.toBeVisible();
     });
-    test('that the section of text explaining the quadrants is initially hidden', () => {
-        await expect(quadrantsTextSection).not.tobeVisible();
+    test('that the section of text explaining the quadrants is initially hidden', async ({ page }) => {
+        await expect(quadrantsTextSection).not.toBeVisible();
     });
-    test('that a section of text explains the rings when the heading is clicked', () => {
+    test('that a section of text explains the rings when the heading is clicked', async ({ page }) => {
         await page.click('#rings-heading');
-        await expect(ringsTextSection).tobeVisible();
+        await expect(ringsTextSection).toBeVisible();
         await expect(ringsText.first()).not.toBeEmpty();
     });
-    test('that a section of text explains the quadrants when the heading is clicked', () => {
+    test('that a section of text explains the quadrants when the heading is clicked', async ({ page }) => {
         await page.click('quadrants-heading');
-        await expect(quadrantsTextSection).tobeVisible();
+        await expect(quadrantsTextSection).toBeVisible();
         await expect(quadrantsText.first()).not.toBeEmpty();
     });
 });
