@@ -13,7 +13,7 @@ const getRadarData = async () => {
 };
 
 const getRingsAndQuadrantsInfo = async () => {
-    const result = await fetch(`${window.location.origin}/ringsAndQuadrantsInfo`);
+    const result = await fetch(`${window.location.origin}/rings-and-quadrants-info`);
     const data = await result.json();
     return data;
 };
@@ -88,6 +88,7 @@ redraw();
 
 // Display rings and quadrant info
 document.getElementById('rings-text-section').innerHTML = ringsAndQuadrantInfo;
+console.log(ringsAndQuadrantInfo);
 
 
 window.onresize = () => {

@@ -5,6 +5,7 @@ var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
 var radarRouter = require('./routes/radar');
+var ringsAndQuadrantsInfoRouter = require('./routes/rings-and-quadrant-info');
 
 var app = express();
 
@@ -16,5 +17,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/radar', radarRouter);
+app.use('/rings-and-quadrants-info', ringsAndQuadrantsInfoRouter);
 
 module.exports = app;
