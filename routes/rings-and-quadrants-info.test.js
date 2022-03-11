@@ -1,4 +1,4 @@
-import { findSectionHeading } from './rq-info-helper.js';
+import { findSectionIds } from './rq-info-helper.js';
 import { mockResults } from './mock-results.js'
 
 let pageObject;
@@ -11,10 +11,10 @@ describe('Correct section heading should be returned', () => {
         };
     });
     test('is correct rings heading given?', () => {
-        expect(findSectionHeading(pageObject, "rings")).toBe([2,3,4]);
+        expect(findSectionIds(pageObject, "rings")).toStrictEqual([2,3,4]);
     });
     test('is correct quadrants heading given?', () => {
-        expect(findSectionHeading(pageObject, "quadrants")).toBe([5,6,7]);
+        expect(findSectionIds(pageObject, "quadrants")).toStrictEqual([5,6,7]);
     });
     test('does it handle an invalid object correctly?', () => {
         let invalidObject = {
@@ -27,7 +27,7 @@ describe('Correct section heading should be returned', () => {
         let invalidObject2 = {
             completelyInvalid: "1"
         }
-        expect(findSectionHeading(invalidObject, "quadrants")).toBe([]);
-        expect(findSectionHeading(invalidObject2, "quadrants")).toBe([]);
+        expect(findSectionIds(invalidObject, "quadrants")).toStrictEqual([]);
+        expect(findSectionIds(invalidObject2, "quadrants")).toStrictEqual([]);
     })
 });

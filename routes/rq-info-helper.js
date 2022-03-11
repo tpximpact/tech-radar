@@ -36,8 +36,15 @@ function findSectionIds(pageObject, sectionName) {
                     // Check whether or not the next object on the page is a
                     // bulleted list item. If so, this is the heading that will
                     // be guessed to be correct
-                    if (typeof results[index + 1].bulleted_list_item != 'undefined') {
-                        return index;
+                    let j = index + 1;
+                    if (typeof results[j].bulleted_list_item != 'undefined') {
+                        const resultsArray = [index];
+                        while (j < results.length && typeof results[j].bulleted_list_item != 'undefined') {
+                            // Add the remaining bullet list items that follow
+                            resultsArray.push(j);
+                            j++;
+                        }
+                        return resultsArray;
                     }
                 }
             }
@@ -47,4 +54,4 @@ function findSectionIds(pageObject, sectionName) {
     return [];
 }
 
-exports.findSectionHeading = findSectionHeading;
+exports.findSectionIds = findSectionIds;
