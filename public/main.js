@@ -89,8 +89,10 @@ redraw();
 
 // Display rings and quadrant info
 let ringsHeading = document.getElementById("rings-heading");
+let quadrantsHeading = document.getElementById("quadrants-heading");
 
 ringsHeading.innerHTML = buildFormattedInnerHTMLFrom(ringsAndQuadrantInfo.ringsSection[0].textArray);
+quadrantsHeading.innerHTML = buildFormattedInnerHTMLFrom(ringsAndQuadrantInfo.quadrantsSection[0].textArray);
 
 window.onresize = () => {
     setTimeout(() => {
