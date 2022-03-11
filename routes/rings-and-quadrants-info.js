@@ -1,4 +1,4 @@
-import { findSectionHeading } from './rg-info-helper.js';
+const helperFuncs = require('./rq-info-helper');
 require('dotenv').config();
 const { Client } = require('@notionhq/client');
 var express = require('express');
@@ -14,6 +14,9 @@ router.get('/', async function (req, res, next) {
         page_size: 50,
       });
     const data = response;
+    const ringsSectionIds = helperFuncs.findSectionIds(response, "rings");
+    const quadrantsSectionIds = helperFuncs.findSectionIds(response, "quadrants");
+    console.log(quadrantsSectionHeadingId);
     res.json(data);
 });
 

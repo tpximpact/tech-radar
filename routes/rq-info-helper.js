@@ -1,8 +1,8 @@
-export function findSectionHeading(pageObject, sectionName) {
+function findSectionIds(pageObject, sectionName) {
     /*
-    Returns the ID of the object most likely to be the heading of the "What
-    are the rings/quadrants?" section (determined by the sectionName
-    parameter).
+    Returns an array withh the IDs of the objects most likely to part of the
+    "What are the rings/quadrants?" section (determined by the sectionName
+    parameter). First item in the array is the heading.
     */
 
     // Check if an object can be iterated through
@@ -18,12 +18,12 @@ export function findSectionHeading(pageObject, sectionName) {
     if (typeof pageObject.results != 'undefined') {
         results = pageObject.results;
     } else {
-        return -1;
+        return [];
     }
     
     // Check that there is a results array in this object
     if (!isIterable(results)) {
-        return -1;
+        return [];
     }
 
     for (const [index, block] of results.entries()) {
@@ -44,5 +44,7 @@ export function findSectionHeading(pageObject, sectionName) {
         }
     }
 
-    return -1;
+    return [];
 }
+
+exports.findSectionHeading = findSectionHeading;
