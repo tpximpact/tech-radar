@@ -4,7 +4,6 @@ function findSectionIds(pageObject, sectionName) {
     "What are the rings/quadrants?" section (determined by the sectionName
     parameter). First item in the array is the heading.
     */
-
     // Check if an object can be iterated through
     const isIterable = (obj) => {
             if (obj == null) {
@@ -52,6 +51,14 @@ function findSectionIds(pageObject, sectionName) {
     }
 
     return [];
+}
+
+function getTextFrom(pageObject, arrayOfIndexes) {
+    /*
+    Returns an array of objects with all the text and formatting from the
+    pageObject and the indexes at arrayOfIndexes.
+    */
+
 }
 
 exports.findSectionIds = findSectionIds;

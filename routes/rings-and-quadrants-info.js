@@ -16,7 +16,6 @@ router.get('/', async function (req, res, next) {
     const data = response;
     const ringsSectionIds = helperFuncs.findSectionIds(response, "rings");
     const quadrantsSectionIds = helperFuncs.findSectionIds(response, "quadrants");
-    console.log(quadrantsSectionHeadingId);
     res.json(data);
 });
 
