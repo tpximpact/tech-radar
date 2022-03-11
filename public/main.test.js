@@ -17,7 +17,7 @@ const partiallyEmptyInput = [
         text: "line 2 bulletedlistitem",
     }
 ];
-const partiallyEmptyOutput = "line 2 bulletlistitem";
+const partiallyEmptyOutput = "line 2 bulletedlistitem";
 
 describe('Ensure formatted HTML built from Notion API data is correct', () => {
     test('that complete Notion API data gives expected output', () => {
