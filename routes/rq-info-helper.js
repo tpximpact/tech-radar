@@ -57,8 +57,50 @@ function getTextFrom(pageObject, arrayOfIndexes) {
     /*
     Returns an array of objects with all the text and formatting from the
     pageObject and the indexes at arrayOfIndexes.
+
+    Objects within the output array have the following structure:
+    {
+        textArray: [
+            {
+                text: "string",
+                annotations: {
+                    bold: bool,
+                    code: bool,
+                    color: "string",
+                    italic: bool,
+                    strikethrough: bool,
+                    underline: bool,
+                    }
+            },
+            ...
+        ]
+    }
     */
-    return 0;
+    const getBlockType = (block) => {
+        for (const attr in block) {return attr};
+    }
+
+    const outputArray = new Array();
+
+    if (typeof pageObject.results == 'undefined') {
+        return [];
+    }
+
+    for (const pageObjectIndex of arrayOfIndexes) {
+        if (pageObjectIndex < pageObject.results.length) {
+            const newBlock = {textArray: new Array()};
+            const blockType = getBlockType(pageObject.results[pageObjectIndex]);
+            for (const textElement of pageObject.results[pageObjectIndex][blockType].text) {
+                newBlock.textArray.push({
+                    text: textElement.text.content,
+                    annotations: textElement.text.annotations
+                });
+            }
+            outputArray.push(newBlock);
+        }
+    }
+
+    return outputArray;
 }
 
 exports.findSectionIds = findSectionIds;

@@ -74,15 +74,15 @@ export const mockResults = [
                 {
                     text: {
                         content: "What are the rings?",
+                        annotations: {
+                            "bold": false,
+                            "italic": false,
+                            "strikethrough": false,
+                            "underline": false,
+                            "code": false,
+                            "color": "default"
+                        }
                     },
-                    annotations: {
-                        "bold": false,
-                        "italic": false,
-                        "strikethrough": false,
-                        "underline": false,
-                        "code": false,
-                        "color": "default"
-                    }
                 },
             ]
         },
@@ -267,7 +267,7 @@ export const expectedOutput = [
                     bold: false,
                     code: false,
                     color: "default",
-                    italic: true,
+                    italic: false,
                     strikethrough: false,
                     underline: false,
                     }

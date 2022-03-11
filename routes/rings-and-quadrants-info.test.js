@@ -42,9 +42,9 @@ describe('Correct text object should be returned', () => {
         indexesArray = [2,3];
     });
     test('that invalid input is handled correctly', () => {
-        expect(getTextFrom(invalidObject, indexesArray)).toBeNull();
-        expect(getTextFrom(pageObject, [])).toBeNull();
-        expect(getTextFrom(pageObject, [73,74])).toBeNull();
+        expect(getTextFrom(invalidObject, indexesArray)).toStrictEqual([]);
+        expect(getTextFrom(pageObject, [])).toStrictEqual([]);
+        expect(getTextFrom(pageObject, [73,74])).toStrictEqual([]);
     });
     test('that expected output is given for valid data', () => {
         expect(getTextFrom(pageObject, indexesArray)).toStrictEqual(expectedOutput);
