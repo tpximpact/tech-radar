@@ -1,4 +1,5 @@
 import { radar_visualization } from './build-radar.js';
+import { buildFormattedInnerHTMLFrom } from './main-helper.js';
 
 // Show loading animation
 const loader = document.getElementById("loader-container");
@@ -87,9 +88,9 @@ if (data.excludedData.length > 0) {
 redraw();
 
 // Display rings and quadrant info
-document.getElementById('rings-text-section').innerHTML = ringsAndQuadrantInfo;
-console.log(ringsAndQuadrantInfo);
+let ringsHeading = document.getElementById("rings-heading");
 
+ringsHeading.innerHTML = buildFormattedInnerHTMLFrom(ringsAndQuadrantInfo.ringsSection[0].textArray);
 
 window.onresize = () => {
     setTimeout(() => {
