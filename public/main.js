@@ -90,9 +90,46 @@ redraw();
 // Display rings and quadrant info
 let ringsHeading = document.getElementById("rings-heading");
 let quadrantsHeading = document.getElementById("quadrants-heading");
+let ringsTextSection = document.getElementById("rings-text-section");
+let quadrantsTextSection = document.getElementById("quadrants-text-section");
 
 ringsHeading.innerHTML = buildFormattedInnerHTMLFrom(ringsAndQuadrantInfo.ringsSection[0].textArray);
 quadrantsHeading.innerHTML = buildFormattedInnerHTMLFrom(ringsAndQuadrantInfo.quadrantsSection[0].textArray);
+
+const populateBulletpointTextSection = (bulletpointTextSection, bulletpointTextArray) => {
+    /*
+        bulletpointTextSection: A DOM element to populate with bullet points.
+        bulletpointTextArray:   An array containing input data from the Notion API containing only data
+                                relevant to the bullet points.
+    */
+    for (const bulletpoint of bulletpointTextArray) {
+        const innerHTML = buildFormattedInnerHTMLFrom(bulletpoint.textArray);
+        const tag = document.createElement("div");
+        tag.style.padding = "1em";
+        tag.innerHTML = innerHTML;
+        bulletpointTextSection.appendChild(tag);
+    }
+};
+
+populateBulletpointTextSection(ringsTextSection, ringsAndQuadrantInfo.ringsSection.slice(1));
+populateBulletpointTextSection(quadrantsTextSection, ringsAndQuadrantInfo.quadrantsSection.slice(1));
+
+// When ring/quadrants headings are clicked, the relevant section is made visible
+ringsHeading.onclick = () => {
+    if (ringsTextSection.style.display == "none") {
+        ringsTextSection.style.display = "block";
+    } else {
+        ringsTextSection.style.display = "none";
+    }
+};
+
+quadrantsHeading.onclick = () => {
+    if (quadrantsTextSection.style.display == "none") {
+        quadrantsTextSection.style.display = "block";
+    } else {
+        quadrantsTextSection.style.display = "none";
+    }
+};
 
 window.onresize = () => {
     setTimeout(() => {
