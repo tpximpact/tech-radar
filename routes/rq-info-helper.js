@@ -77,7 +77,12 @@ function getTextFrom(pageObject, arrayOfIndexes) {
     }
     */
     const getBlockType = (block) => {
-        for (const attr in block) {return attr};
+        for (const attr in block) {
+            if (attr == "heading_3" || attr == "bulleted_list_item")  {
+            return attr
+            }
+        }
+        return null;
     }
 
     const outputArray = new Array();
@@ -90,10 +95,11 @@ function getTextFrom(pageObject, arrayOfIndexes) {
         if (pageObjectIndex < pageObject.results.length) {
             const newBlock = {textArray: new Array()};
             const blockType = getBlockType(pageObject.results[pageObjectIndex]);
+            if (blockType == null) {continue};
             for (const textElement of pageObject.results[pageObjectIndex][blockType].text) {
                 newBlock.textArray.push({
                     text: textElement.text.content,
-                    annotations: textElement.text.annotations
+                    annotations: textElement.annotations
                 });
             }
             outputArray.push(newBlock);

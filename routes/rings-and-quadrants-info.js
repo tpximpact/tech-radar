@@ -13,9 +13,12 @@ router.get('/', async function (req, res, next) {
         block_id: pageId,
         page_size: 50,
       });
-    const data = response;
     const ringsSectionIds = helperFuncs.findSectionIds(response, "rings");
     const quadrantsSectionIds = helperFuncs.findSectionIds(response, "quadrants");
+    const data = {
+        ringsSection: helperFuncs.getTextFrom(response, ringsSectionIds),
+        quadrantsSection: helperFuncs.getTextFrom(response, quadrantsSectionIds)
+    }
     res.json(data);
 });
 
