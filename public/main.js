@@ -116,18 +116,18 @@ populateBulletpointTextSection(quadrantsTextSection, ringsAndQuadrantInfo.quadra
 
 // When ring/quadrants headings are clicked, the relevant section is made visible
 ringsHeading.onclick = () => {
-    if (ringsTextSection.style.display == "none") {
-        ringsTextSection.style.display = "block";
+    if (ringsTextSection.style.lineHeight == "0") {
+        ringsTextSection.style = "overflow: hidden; transition: all .5s ease-in-out; line-height: 1.5; padding: 0 1em; padding-top: 1em; padding-bottom: 1em; color: black;";
     } else {
-        ringsTextSection.style.display = "none";
+        ringsTextSection.style = "overflow: hidden; transition: all .5s ease-in-out; line-height: 0; padding: 0 1em; color: transparent;";
     }
 };
 
 quadrantsHeading.onclick = () => {
-    if (quadrantsTextSection.style.display == "none") {
-        quadrantsTextSection.style.display = "block";
+    if (quadrantsTextSection.style.lineHeight == "0") {
+        quadrantsTextSection.style = "overflow: hidden; transition: all .5s ease-in-out; line-height: 1.5; padding: 0 1em; padding-top: 1em; padding-bottom: 1em; color: black;";
     } else {
-        quadrantsTextSection.style.display = "none";
+        quadrantsTextSection.style = "overflow: hidden; transition: all .5s ease-in-out; line-height: 0; padding: 0 1em; color: transparent;";
     }
 };
 
