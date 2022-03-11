@@ -58,7 +58,8 @@ function getTextFrom(pageObject, arrayOfIndexes) {
     Returns an array of objects with all the text and formatting from the
     pageObject and the indexes at arrayOfIndexes.
     */
-
+    return 0;
 }
 
 exports.findSectionIds = findSectionIds;
+exports.getTextFrom = getTextFrom;
