@@ -96,7 +96,7 @@ let quadrantsTextSection = document.getElementById("quadrants-text-section");
 ringsHeading.innerHTML = buildFormattedInnerHTMLFrom(ringsAndQuadrantInfo.ringsSection[0].textArray);
 quadrantsHeading.innerHTML = buildFormattedInnerHTMLFrom(ringsAndQuadrantInfo.quadrantsSection[0].textArray);
 
-const populateBulletpointTextSection = (bulletpointTextSection, bulletpointTextArray) => {
+const populateBulletpointTextSection = (bulletpointTextSection, bulletpointTextArray, className) => {
     /*
         bulletpointTextSection: A DOM element to populate with bullet points.
         bulletpointTextArray:   An array containing input data from the Notion API containing only data
@@ -107,12 +107,13 @@ const populateBulletpointTextSection = (bulletpointTextSection, bulletpointTextA
         const tag = document.createElement("div");
         tag.style.padding = "1em";
         tag.innerHTML = innerHTML;
+        tag.className = className;
         bulletpointTextSection.appendChild(tag);
     }
 };
 
-populateBulletpointTextSection(ringsTextSection, ringsAndQuadrantInfo.ringsSection.slice(1));
-populateBulletpointTextSection(quadrantsTextSection, ringsAndQuadrantInfo.quadrantsSection.slice(1));
+populateBulletpointTextSection(ringsTextSection, ringsAndQuadrantInfo.ringsSection.slice(1), 'rings-text');
+populateBulletpointTextSection(quadrantsTextSection, ringsAndQuadrantInfo.quadrantsSection.slice(1), 'quadrants-text');
 
 // When ring/quadrants headings are clicked, the relevant section is made visible
 ringsHeading.onclick = () => {
