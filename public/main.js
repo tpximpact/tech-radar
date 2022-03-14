@@ -1,4 +1,5 @@
 import { radar_visualization } from './build-radar.js';
+import { buildFormattedInnerHTMLFrom } from './main-helper.js';
 
 // Show loading animation
 const loader = document.getElementById("loader-container");
@@ -12,7 +13,14 @@ const getRadarData = async () => {
     return data;
 };
 
+const getRingsAndQuadrantsInfo = async () => {
+    const result = await fetch(`${window.location.origin}/rings-and-quadrants-info`);
+    const data = await result.json();
+    return data;
+};
+
 const data = await getRadarData();
+const ringsAndQuadrantInfo = await getRingsAndQuadrantsInfo();
 
 // Hide loading animation
 loader.style.display = "none";
@@ -79,6 +87,50 @@ if (data.excludedData.length > 0) {
 
 redraw();
 
+// Display rings and quadrant info
+let ringsHeading = document.getElementById("rings-heading");
+let quadrantsHeading = document.getElementById("quadrants-heading");
+let ringsTextSection = document.getElementById("rings-text-section");
+let quadrantsTextSection = document.getElementById("quadrants-text-section");
+
+ringsHeading.innerHTML = buildFormattedInnerHTMLFrom(ringsAndQuadrantInfo.ringsSection[0].textArray);
+quadrantsHeading.innerHTML = buildFormattedInnerHTMLFrom(ringsAndQuadrantInfo.quadrantsSection[0].textArray);
+
+const populateBulletpointTextSection = (bulletpointTextSection, bulletpointTextArray, className) => {
+    /*
+        bulletpointTextSection: A DOM element to populate with bullet points.
+        bulletpointTextArray:   An array containing input data from the Notion API containing only data
+                                relevant to the bullet points.
+    */
+    for (const bulletpoint of bulletpointTextArray) {
+        const innerHTML = buildFormattedInnerHTMLFrom(bulletpoint.textArray);
+        const tag = document.createElement("div");
+        tag.style.padding = "1em";
+        tag.innerHTML = innerHTML;
+        tag.className = className;
+        bulletpointTextSection.appendChild(tag);
+    }
+};
+
+populateBulletpointTextSection(ringsTextSection, ringsAndQuadrantInfo.ringsSection.slice(1), 'rings-text');
+populateBulletpointTextSection(quadrantsTextSection, ringsAndQuadrantInfo.quadrantsSection.slice(1), 'quadrants-text');
+
+// When ring/quadrants headings are clicked, the relevant section is made visible
+ringsHeading.onclick = () => {
+    if (ringsTextSection.style.lineHeight == "0") {
+        ringsTextSection.style = "overflow: hidden; transition: all .5s ease-in-out; line-height: 1.5; padding: 0 1em; padding-top: 1em; padding-bottom: 1em; color: black;";
+    } else {
+        ringsTextSection.style = "overflow: hidden; transition: all .5s ease-in-out; line-height: 0; padding: 0 1em; color: transparent;";
+    }
+};
+
+quadrantsHeading.onclick = () => {
+    if (quadrantsTextSection.style.lineHeight == "0") {
+        quadrantsTextSection.style = "overflow: hidden; transition: all .5s ease-in-out; line-height: 1.5; padding: 0 1em; padding-top: 1em; padding-bottom: 1em; color: black;";
+    } else {
+        quadrantsTextSection.style = "overflow: hidden; transition: all .5s ease-in-out; line-height: 0; padding: 0 1em; color: transparent;";
+    }
+};
 
 window.onresize = () => {
     setTimeout(() => {

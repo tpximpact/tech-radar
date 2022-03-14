@@ -8,4 +8,7 @@ describe('Check that environment variables are set', () => {
     test('is NOTION_DATABASE_ID set?', () => {
         expect(typeof process.env.NOTION_DATABASE_ID).toBe('string');
     });
+    test('is NOTION_PAGE_ID set?', () => {
+        expect(typeof process.env.NOTION_PAGE_ID).toBe('string');
+    });
 });
