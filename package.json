@@ -1,40 +1,41 @@
 {
-  "name": "tech-radar",
-  "version": "0.0.1",
-  "description": "A visualisation of our Tech Radar from Notion",
-  "main": "index.js",
-  "author": "Sarah Williams <sarah.a.williams@foundry4.com>",
-  "license": "MIT",
-  "private": true,
-  "scripts": {
-    "start": "node ./bin/www",
-    "dev": "npm start & npm run css",
-    "css": "npx tailwindcss -i ./public/prebuild.css -o ./public/style.css --watch",
-    "test": "jest"
-  },
-  "dependencies": {
-    "@notionhq/client": "^0.4.13",
-    "cookie-parser": "^1.4.6",
-    "debug": "^4.3.3",
-    "dotenv": "^16.0.0",
-    "express": "^4.17.2",
-    "morgan": "^1.10.0",
-    "tailwindcss": "^3.0.22"
-  },
-  "devDependencies": {
-    "@babel/core": "^7.17.5",
-    "@babel/preset-env": "^7.16.11",
-    "@playwright/test": "^1.19.2",
-    "jest": "^27.5.1",
-    "prettier": "^2.5.1"
-  },
-  "jest": {
-    "testPathIgnorePatterns": [
-      "/e2e-tests/",
-      "/node_modules/"
-    ],
-    "transform": {
-      "^.+\\.[t|j]sx?$": "babel-jest"
+    "name": "tech-radar",
+    "version": "0.0.1",
+    "description": "A visualisation of our Tech Radar from Notion",
+    "main": "index.js",
+    "author": "Sarah Williams <sarah.a.williams@foundry4.com>",
+    "license": "MIT",
+    "private": true,
+    "scripts": {
+        "start": "node ./bin/www",
+        "dev": "npm start & npm run css",
+        "css": "npx tailwindcss -i ./public/prebuild.css -o ./public/style.css --watch",
+        "test": "jest",
+        "e2e": "npx playwright test"
+    },
+    "dependencies": {
+        "@notionhq/client": "^0.4.13",
+        "cookie-parser": "^1.4.6",
+        "debug": "^4.3.3",
+        "dotenv": "^16.0.0",
+        "express": "^4.17.2",
+        "morgan": "^1.10.0",
+        "tailwindcss": "^3.0.22"
+    },
+    "devDependencies": {
+        "@babel/core": "^7.17.5",
+        "@babel/preset-env": "^7.16.11",
+        "@playwright/test": "^1.19.2",
+        "jest": "^27.5.1",
+        "prettier": "^2.5.1"
+    },
+    "jest": {
+        "testPathIgnorePatterns": [
+            "/e2e-tests/",
+            "/node_modules/"
+        ],
+        "transform": {
+            "^.+\\.[t|j]sx?$": "babel-jest"
+        }
     }
-  }
 }
