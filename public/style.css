@@ -543,6 +543,14 @@ Ensure the default browser behavior of the `hidden` attribute.
   height: 100vh;
 }
 
+.h-28 {
+  height: 7rem;
+}
+
+.w-28 {
+  width: 7rem;
+}
+
 .w-full {
   width: 100%;
 }
@@ -561,6 +569,23 @@ Ensure the default browser behavior of the `hidden` attribute.
 
 .transform {
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+
+@-webkit-keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin {
+  -webkit-animation: spin 1s linear infinite;
+          animation: spin 1s linear infinite;
 }
 
 .list-disc {
@@ -587,8 +612,30 @@ Ensure the default browser behavior of the `hidden` attribute.
   place-items: center;
 }
 
+.rounded-full {
+  border-radius: 9999px;
+}
+
 .rounded-sm {
   border-radius: 0.125rem;
+}
+
+.border-8 {
+  border-width: 8px;
+}
+
+.border-t-8 {
+  border-top-width: 8px;
+}
+
+.border-gray-200 {
+  --tw-border-opacity: 1;
+  border-color: rgb(229 231 235 / var(--tw-border-opacity));
+}
+
+.border-t-tpx-accent-red {
+  --tw-border-opacity: 1;
+  border-top-color: rgb(250 77 86 / var(--tw-border-opacity));
 }
 
 .bg-orange-200 {

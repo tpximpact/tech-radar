@@ -6,7 +6,6 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>TPXimpact Engineering Tech Radar</title>
         <link rel="stylesheet" href="style.css" />
-        <link rel="stylesheet" href="loader.css" />
         <script
             src="https://kit.fontawesome.com/676984a398.js"
             crossorigin="anonymous"
@@ -23,8 +22,11 @@
         </div>
 
         <div id="loader-container" class="grid place-items-center h-screen">
-            <div id="loading-icon"></div>
+            <div
+                class="animate-spin rounded-full w-28 h-28 border-8 border-gray-200 border-t-8 border-t-tpx-accent-red"
+            ></div>
         </div>
+
         <div id="svg-wrapper">
             <svg id="radar"></svg>
         </div>
