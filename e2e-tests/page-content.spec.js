@@ -1,20 +1,28 @@
 const { test, expect } = require('@playwright/test');
-let radar;
 let legendItem10;
 let bubble;
 let consoleLogMessage;
 let ringsHeading;
 let quadrantsHeading;
-let ringsTextSection;
-let quadrantsTextSection;
 let quadrantsText;
 let ringsText;
 
+let page;
+
 test.describe.configure({ mode: 'parallel' });
 
-// User goes to webpage
-test.beforeEach(async ({ page }) => {
+test.beforeAll(async ({ browser }) => {
+    // Reuse page as these tests don't require a fresh page every time
+    page = await browser.newPage();
     await page.goto('http://localhost:3000');
+});
+
+test.afterAll(async () => {
+    await page.close();
+});
+
+// User goes to webpage
+test.beforeEach(async () => {
     radar = await page.locator('#radar');
     legendItem10 = await page.locator('#legendItem10');
     bubble = await page.locator('#bubble');
@@ -31,33 +39,25 @@ test.beforeEach(async ({ page }) => {
 });
 
 test.describe('Hovering over a label in the legend', () => {
-    test('to check that item is not highlighted initially', async ({
-        page,
-    }) => {
+    test('to check that item is not highlighted initially', async () => {
         await expect(legendItem10).not.toHaveAttribute('fill', 'white', {
             timeout: 20000,
         });
     });
-    test('to check that hovering over an item highlights it', async ({
-        page,
-    }) => {
+    test('to check that hovering over an item highlights it', async () => {
         await page.hover('#legendItem10', { timeout: 20000 });
         await expect(legendItem10).toHaveAttribute('fill', 'white', {
             timeout: 20000,
         });
     });
-    test('to check that taking mouse away from item de-highlights it', async ({
-        page,
-    }) => {
+    test('to check that taking mouse away from item de-highlights it', async () => {
         await page.hover('#legendItem10', { timeout: 20000 });
         await page.hover('#legendItem20', { timeout: 20000 });
         await expect(legendItem10).not.toHaveAttribute('fill', 'white', {
             timeout: 20000,
         });
     });
-    test('to check that hovering over an item displays a label on the visualisation', async ({
-        page,
-    }) => {
+    test('to check that hovering over an item displays a label on the visualisation', async () => {
         await page.hover('#legendItem10', { timeout: 20000 });
         await expect(bubble).toBeVisible();
     });
@@ -66,27 +66,21 @@ test.describe('Hovering over a label in the legend', () => {
 test.describe(
     'User wants to know what the rings and quadrants are referring to',
     () => {
-        test('that there is a title for users who want to know what the rings are', async ({
-            page,
-        }) => {
+        test('that there is a title for users who want to know what the rings are', async () => {
             await expect(ringsHeading).not.toBeEmpty();
         });
-        test('that there is a title for users who want to know what the quadrants are', async ({
-            page,
-        }) => {
+        test('that there is a title for users who want to know what the quadrants are', async () => {
             await expect(quadrantsHeading).not.toBeEmpty();
         });
-        test('that a section of text explains the rings', async ({ page }) => {
+        test('that a section of text explains the rings', async () => {
             await expect(ringsText).toHaveCount(4);
         });
-        test('that a section of text explains the quadrants', async ({
-            page,
-        }) => {
+        test('that a section of text explains the quadrants', async () => {
             await expect(quadrantsText).toHaveCount(4);
         });
     }
 );
 
-test.afterEach(async ({ page }, testInfo) => {
+test.afterEach(async () => {
     await expect(consoleLogMessage).toBeNull();
 });
