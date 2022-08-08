@@ -1,55 +1,73 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>TPXimpact Engineering Tech Radar</title>
-    <link rel="stylesheet" href="style.css" />
-    <link rel="stylesheet" href="loader.css" />
-    <script src="https://kit.fontawesome.com/676984a398.js" crossorigin="anonymous"></script>
-  </head>
-  <body class="container mx-auto">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>TPXimpact Engineering Tech Radar</title>
+        <link rel="stylesheet" href="style.css" />
+        <script
+            src="https://kit.fontawesome.com/676984a398.js"
+            crossorigin="anonymous"
+        ></script>
+    </head>
+    <body class="container mx-auto">
+        <header class="flex flex-row p-4">
+            <div class="basis-1/4 m-auto">
+                <img src="/assets/TPXimpact.png" />
+            </div>
+            <h1 class="text-4xl font-bold p-4 text-center basis-3/4">
+                Engineering Tech Radar
+            </h1>
+        </header>
 
-    <h1 class="text-2xl p-4 text-center">TPXimpact Engineering Tech Radar - Powered by Notion</h1>
-
-    <div id="loader-container" class="grid place-items-center h-screen">
-      <div id="loading-icon"></div>
-
-    </div>
-    <div id="svg-wrapper">
-        <svg id="radar"></svg>
-
-    </div>
-    
-    <div class="w-full grid grid-cols-2 grid-rows-1">
-      <div class="p-5">
-        <a href="#!">
-          <div class="text-2xl font-medium underline decoration-indigo-400 text-sky-900 hover:text-indigo-500 transition-colors" id="rings-heading"></div>
-        </a>
-        <div id="rings-text-section" style="overflow: hidden; transition: all .5s ease-in-out; line-height: 0; padding: 0 1em; color: transparent;"></div>
-      </div>
-      <div class="p-5">
-        <a href="#!" >
-          <div class="text-2xl font-medium underline decoration-indigo-400 text-sky-900 hover:text-indigo-500 transition-colors" id="quadrants-heading"></div>
-        </a>
-        <div id="quadrants-text-section" style="overflow: hidden; transition: all .5s ease-in-out; line-height: 0; padding: 0 1em; color: transparent;"></div>
-      </div>
-    </div>
-
-    <div class="m-5 grid place-items-center">
-      <div id="incomplete-data-warning" class="invisible bg-orange-200 w-auto p-4 flex flex-col rounded-sm">
-        <div class="bg-orange-100 px-4 py-2 rounded-sm">
-          <strong class="inline-block">N.B. The following items couldn't be shown because of incomplete data:</strong>
+        <div id="loader-container" class="grid place-items-center h-screen">
+            <div
+                class="animate-spin rounded-full w-28 h-28 border-8 border-gray-200 border-t-8 border-t-tpx-accent-red"
+            ></div>
         </div>
-        <ul id="hidden-items-list" class="px-8 pt-3">
-  
-        </ul>
-      </div>
-    </div>
 
-    <script src="https://d3js.org/d3.v4.min.js"></script>
-    <script type="module" src="./main.js"></script>
-    <script type="module" src="./main-helper.js"></script>
-  </body>
+        <div id="svg-wrapper">
+            <svg id="radar"></svg>
+        </div>
+
+        <div class="w-full grid grid-cols-1 lg:grid-cols-2 gap-4 grid-rows-1">
+            <div class="p-5 bg-gray-50 rounded-md">
+                <h2
+                    class="text-2xl font-bold text-tpx-accent-blue pb-4"
+                    id="rings-heading"
+                ></h2>
+                <ul id="rings-text-section" class="list-disc list-inside"></ul>
+            </div>
+            <div class="p-5 bg-gray-50 rounded-md">
+                <h2
+                    class="text-2xl font-bold text-tpx-accent-blue pb-4"
+                    id="quadrants-heading"
+                ></h2>
+                <ul
+                    id="quadrants-text-section"
+                    class="list-disc list-inside"
+                ></ul>
+            </div>
+        </div>
+
+        <div class="m-5 grid place-items-center">
+            <div
+                id="incomplete-data-warning"
+                class="invisible bg-tpx-pastel-red w-auto p-4 flex flex-col rounded-sm"
+            >
+                <div class="px-4 py-2 rounded-sm">
+                    <strong class="inline-block"
+                        >N.B. The following items couldn't be shown because of
+                        incomplete data:</strong
+                    >
+                </div>
+                <ul id="hidden-items-list" class="px-8 pt-3"></ul>
+            </div>
+        </div>
+
+        <script src="https://d3js.org/d3.v4.min.js"></script>
+        <script type="module" src="./main.js"></script>
+        <script type="module" src="./main-helper.js"></script>
+    </body>
 </html>
